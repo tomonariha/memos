@@ -1,0 +1,9 @@
+<p class='title'><%= @data[@id]['title'] %></p>
+<p class='body'><%= @data[@id]['body'] %></p>
+<form method='get' action="<%= @id.to_i %>/edit">
+  <input type='submit' value='変更'>
+</form>
+<form method='post' action="/memos/<%= @id.to_i %>">
+  <input type='hidden' name='_method' value='delete'>
+  <input type='submit' value='削除'>
+</form>

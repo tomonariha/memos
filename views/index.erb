@@ -1,0 +1,8 @@
+<form method='get' action='memos/new'>
+  <input type='submit' value='追加'>
+</form>
+<ul><% id_list = @data.keys %>
+  <% id_list.each do |id| %>
+  <li> <a href='/memos/<%= id %>'><%= @data[id]['title'] %></a></li>
+  <% end %>
+</ul>
