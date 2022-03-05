@@ -4,8 +4,8 @@
 1. 右上の`Fork`ボタンを押し、memosリポジトリを自分のリポジトリにコピーします。
 1. `git clone`でmemosを任意のディレクトリにコピーします。
 1. コマンドラインを起動して`gem install bundler`を実行し、bundrerをインストールします。
-1. memosディレクトリに移動して`bundle install`を実行し、Gemfileに書いてあるsinatra、sinatra-contribのgemをインストールします。
-1. memosディレクトリでruby memos.rbを実行し、Sinatraを起動します。
+1. `bundle install`を実行し、sinatra、sinatra-contribのgemをインストールします。
+1. ruby memos.rbを実行し、Sinatraを起動します。
 1. ブラウザで<http://localhost:4567/memos>にアクセスします。
 1. `追加`でメモを新しく作り投稿します。
 1. インデックスでメモのタイトルをクリックすると内容が表示されます。
