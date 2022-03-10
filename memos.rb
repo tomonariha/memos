@@ -13,10 +13,6 @@ def load_file
   File.open('public/json/data.json') { |file| @data = JSON.load(file) }
 end
 
-def generate_id
-  id = params[:id].to_s
-end
-
 def generate_data(id)
   @data[id] = { 'title': params['title'], 'body': params['body'] }
 end
@@ -53,14 +49,14 @@ end
 
 patch '/memos/:id' do
   load_file
-  generate_data(generate_id)
+  generate_data(params[:id].to_s)
   save_file
   redirect '/memos'
 end
 
 delete '/memos/:id' do
   load_file
-  @data.delete(generate_id)
+  @data.delete(params[:id].to_s)
   save_file
   redirect '/memos'
 end
