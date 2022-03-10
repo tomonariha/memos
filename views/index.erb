@@ -3,6 +3,6 @@
 </form>
 <ul><% id_list = @data.keys %>
   <% id_list.each do |id| %>
-  <li> <a href='/memos/<%= id %>'><%= @data[id]['title'] %></a></li>
+  <li> <a href='/memos/<%= id %>'><%= CGI.escapeHTML(@data[id]['title']) %></a></li>
   <% end %>
 </ul>

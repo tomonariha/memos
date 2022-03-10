@@ -1,5 +1,5 @@
-<p class='title'><%= @data[@id]['title'] %></p>
-<p class='body'><%= @data[@id]['body'] %></p>
+<p class='title'><%= CGI.escapeHTML(@data[@id]['title']) %></p>
+<p class='body'><%= CGI.escapeHTML(@data[@id]['body']) %></p>
 <form method='get' action="<%= @id.to_i %>/edit">
   <input type='submit' value='変更'>
 </form>

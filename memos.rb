@@ -7,7 +7,6 @@ require 'cgi'
 
 def save_file
   File.open('public/json/data.json', 'w') { |file| JSON.dump(@data, file) }
-  redirect '/memos'
 end
 
 def load_file
@@ -19,7 +18,7 @@ def generate_id
 end
 
 def generate_data(id)
-  @data[id] = { 'title': CGI.escapeHTML(params['title']), 'body': CGI.escapeHTML(params['body']) }
+  @data[id] = { 'title': params['title'], 'body': params['body'] }
 end
 
 get '/memos' do
@@ -44,6 +43,7 @@ post '/memos' do
   load_file
   generate_data(object_id.to_s)
   save_file
+  redirect '/memos'
 end
 
 get '/memos/:id/edit' do
@@ -57,10 +57,12 @@ patch '/memos/:id' do
   load_file
   generate_data(generate_id)
   save_file
+  redirect '/memos'
 end
 
 delete '/memos/:id' do
   load_file
   @data.delete(generate_id)
   save_file
+  redirect '/memos'
 end
