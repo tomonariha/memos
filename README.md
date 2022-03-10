@@ -1,7 +1,6 @@
 # このアプリについて
 - 簡単なメモを記録・表示するWEBアプリケーションです。
 # 使い方
-1. 右上の`Fork`ボタンを押し、memosリポジトリを自分のリポジトリにコピーします。
 1. `git clone`でmemosを任意のディレクトリにコピーします。
 1. コマンドラインを起動して`gem install bundler`を実行し、bundrerをインストールします。
 1. `bundle install`を実行し、sinatra、sinatra-contribのgemをインストールします。

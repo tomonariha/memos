@@ -14,7 +14,7 @@ def load_file
 end
 
 def generate_id
-  @id = params[:id].to_s
+  id = params[:id].to_s
 end
 
 def generate_data(id)
@@ -34,7 +34,6 @@ end
 
 get '/memos/:id' do
   load_file
-  generate_id
   @title = 'detail'
   erb :detail
 end
@@ -48,7 +47,6 @@ end
 
 get '/memos/:id/edit' do
   load_file
-  generate_id
   @title = 'edit'
   erb :edit
 end
