@@ -6,15 +6,15 @@ require 'json'
 require 'cgi'
 
 def save_file
-  File.open('public/json/data.json', 'w') { |file| JSON.dump(@data, file) }
+  File.open('public/json/data.json', 'w') { |file| JSON.dump(@memos, file) }
 end
 
 def load_file
-  File.open('public/json/data.json') { |file| @data = JSON.load(file) }
+  File.open('public/json/data.json') { |file| @memos = JSON.parse(file.read) }
 end
 
-def generate_data(id)
-  @data[id] = { 'title': params['title'], 'body': params['body'] }
+def generate_memos(id)
+  @memos[id] = { 'title': params['title'], 'body': params['body'] }
 end
 
 get '/memos' do
@@ -36,7 +36,7 @@ end
 
 post '/memos' do
   load_file
-  generate_data(object_id.to_s)
+  generate_memos(object_id.to_s)
   save_file
   redirect '/memos'
 end
@@ -49,14 +49,14 @@ end
 
 patch '/memos/:id' do
   load_file
-  generate_data(params[:id].to_s)
+  generate_memos(params[:id].to_s)
   save_file
   redirect '/memos'
 end
 
 delete '/memos/:id' do
   load_file
-  @data.delete(params[:id].to_s)
+  @memos.delete(params[:id].to_s)
   save_file
   redirect '/memos'
 end
