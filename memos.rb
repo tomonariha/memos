@@ -2,23 +2,41 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
+require 'pg'
 require 'cgi'
 
-def save_file
-  File.open('public/json/data.json', 'w') { |file| JSON.dump(@memos, file) }
-end
-
-def load_file
-  File.open('public/json/data.json') { |file| @memos = JSON.parse(file.read) }
-end
-
 def generate_memos(id)
-  @memos[id] = { 'title': params['title'], 'body': params['body'] }
+  @memos = { 'memo_id': id, 'title': params['title'], 'content': params['content'] }
+end
+
+def load_all_memos
+  connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  @memos = connect.exec('select * from memos order by memo_id asc')
+end
+
+def load_detail_memo
+  connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  @memos = connect.exec('select * from memos where memo_id = $1', [params[:id].to_i])
+end
+
+def save_new_memo
+  connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  connect.exec('insert into memos values ($1, $2, $3)', [@memos[:memo_id], @memos[:title], @memos[:content]])
+end
+
+def update_memo
+  connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  connect.exec('update memos set title = $1, content = $2 where memo_id = $3',
+               [@memos[:title], @memos[:content], @memos[:memo_id]])
+end
+
+def delete_memo
+  connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  connect.exec('delete from memos where memo_id = $1', [params[:id]])
 end
 
 get '/memos' do
-  load_file
+  load_all_memos
   @title = 'index'
   erb :index
 end
@@ -29,34 +47,30 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  load_file
+  load_detail_memo
   @title = 'detail'
   erb :detail
 end
 
 post '/memos' do
-  load_file
-  generate_memos(object_id.to_s)
-  save_file
+  generate_memos(object_id)
+  save_new_memo
   redirect '/memos'
 end
 
 get '/memos/:id/edit' do
-  load_file
+  load_detail_memo
   @title = 'edit'
   erb :edit
 end
 
 patch '/memos/:id' do
-  load_file
-  generate_memos(params[:id].to_s)
-  save_file
+  generate_memos(params[:id])
+  update_memo
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  load_file
-  @memos.delete(params[:id].to_s)
-  save_file
+  delete_memo
   redirect '/memos'
 end

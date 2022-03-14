@@ -2,7 +2,7 @@
   <input type='submit' value='追加'>
 </form>
 <ul>
-  <% @memos.each do |id, content| %>
-  <li> <a href='/memos/<%= id.to_i %>'><%= CGI.escapeHTML(content['title']) %></a></li>
+  <% @memos.each do |memo| %>
+  <li> <a href='/memos/<%= memo["memo_id"].to_i %>'><%= CGI.escapeHTML(memo['title']) %></a></li>
   <% end %>
 </ul>
