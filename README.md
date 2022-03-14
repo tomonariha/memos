@@ -4,11 +4,9 @@
 1. `git clone (https://github.com/tomonariha/memos)`でmemosを任意のディレクトリにコピーします。
 1. コマンドラインを起動して`gem install bundler`を実行し、bundrerをインストールします。
 1. PostgreSQLをインストールします。
-1. PostgreSQLに接続し、`CREATE DATABASE MEMOS;`でデータ保存用のDBを作ります。
-1. 作ったデータベース(MEMOS)に移動し、以下のDDL文を実行しデータ保存用のテーブルを作ります。
-``` 
-CREATE TABLE MEMOS (MEMO_ID INTEGER NOT NULL, TITLE VARCHER(20), CONTENT VARCHAR(100), PRIMARY KEY (MEMO_ID));
-```
+1. PostgreSQLに接続し、`CREATE DATABASE MEMO;`でデータ保存用のDBを作ります。
+1. 作ったデータベース(MEMO)に移動し、以下のDDL文を実行しデータ保存用のテーブルを作ります。
+`CREATE TABLE MEMOS (MEMO_ID INTEGER NOT NULL, TITLE VARCHER(20) NOT NULL, CONTENT VARCHAR(100), PRIMARY KEY (MEMO_ID));`
 1. `bundle install`を実行し、sinatra、sinatra-contrib,pgのgemをインストールします。
 1. ruby memos.rbを実行し、Sinatraを起動します。
 1. ブラウザで<http://localhost:4567/memos>にアクセスします。
