@@ -11,28 +11,28 @@ end
 
 def load_all_memos
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  @memos = connect.exec('select * from memos order by id asc')
+  @memos = connect.exec('SELECT * FROM memos ORDER BY id ASC')
 end
 
 def load_detail_memo
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  @memos = connect.exec('select * from memos where id = $1', [params[:id].to_i])
+  @memos = connect.exec('SELECT * FROM memos WHERE id = $1', [params[:id].to_i])
 end
 
 def save_new_memo
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  connect.exec('insert into memos(title, content) values ($1, $2)', [@memos[:title], @memos[:content]])
+  connect.exec('INSERT INTO memos(title, content) VALUES ($1, $2)', [@memos[:title], @memos[:content]])
 end
 
 def update_memo
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  connect.exec('update memos set title = $1, content = $2 where id = $3',
+  connect.exec('UPDATE memos SET title = $1, content = $2 WHERE id = $3',
                [@memos[:title], @memos[:content], @memos[:id]])
 end
 
 def delete_memo
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  connect.exec('delete from memos where id = $1', [params[:id]])
+  connect.exec('DELETE FROM memos WHERE id = $1', [params[:id]])
 end
 
 get '/memos' do
