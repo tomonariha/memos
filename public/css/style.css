@@ -1,4 +1,20 @@
-input[type='text'] {width:150px; padding:2px;}
-textarea[type='text'] {width:150px; height:10em; margin:5px 0px; padding:2px;}
-.title {width:150px;}
-.body {width:150px; height:5em;}
+input[type='text'] {
+  width: 150px;
+  padding: 2px;
+}
+
+textarea[type='text'] {
+  width: 150px;
+  height: 10em;
+  margin: 5px 0px;
+  padding: 2px;
+}
+
+.title {
+  width: 150px;
+}
+
+.body {
+  width: 150px;
+  height: 5em;
+}
