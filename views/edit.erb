@@ -1,8 +1,6 @@
-<% id = params[:id] %>
-<% memo = @memos[0] %>
-<form method='post' action='/memos/<%= id.to_i %>'>
-  <input type='text' name='title' size='30' value=<%= memo['title'] %> ><br>
-  <textarea type='text' name='content' cols='30' rows='10' ><%= memo['content'] %></textarea><br>
+<form method='post' action='/memos/<%= @memos[0]['memo_id'].to_i %>'>
+  <input type='text' name='title' size='30' value=<%= @memos[0]['title'] %> ><br>
+  <textarea type='text' name='content' cols='30' rows='10' ><%= @memos[0]['content'] %></textarea><br>
   <input type='hidden' name='_method' value='patch'>
   <input type='submit' value='変更'>
 </form>
