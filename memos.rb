@@ -6,7 +6,8 @@ require 'pg'
 require 'cgi'
 
 def generate_memos(id, title, content)
-  @memos = { 'id': id, 'title': title, 'content': 'content' }
+  connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  @memos = { 'id': id, 'title': title, 'content': content }
 end
 
 def load_all_memos
