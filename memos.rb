@@ -5,8 +5,8 @@ require 'sinatra/reloader'
 require 'pg'
 require 'cgi'
 
-def generate_memos
-  @memos = { 'id': params['id'], 'title': params['title'], 'content': params['content'] }
+def generate_memos(id, title, content)
+  @memos = { 'id': id, 'title': title, 'content': 'content' }
 end
 
 def load_all_memos
@@ -14,9 +14,9 @@ def load_all_memos
   @memos = connect.exec('SELECT * FROM memos ORDER BY id ASC')
 end
 
-def load_detail_memo
+def load_detail_memo(id)
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  @memos = connect.exec('SELECT * FROM memos WHERE id = $1', [params[:id].to_i])
+  @memos = connect.exec('SELECT * FROM memos WHERE id = $1', id)
 end
 
 def save_new_memo
@@ -30,9 +30,9 @@ def update_memo
                [@memos[:title], @memos[:content], @memos[:id]])
 end
 
-def delete_memo
+def delete_memo(id)
   connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-  connect.exec('DELETE FROM memos WHERE id = $1', [params[:id]])
+  connect.exec('DELETE FROM memos WHERE id = $1', id)
 end
 
 get '/memos' do
@@ -47,30 +47,30 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  load_detail_memo
+  load_detail_memo([params[:id]])
   @title = 'detail'
   erb :detail
 end
 
 post '/memos' do
-  generate_memos
+  generate_memos([params[:id]], params[:title], params[:content])
   save_new_memo
   redirect '/memos'
 end
 
 get '/memos/:id/edit' do
-  load_detail_memo
+  load_detail_memo([params[:id]])
   @title = 'edit'
   erb :edit
 end
 
 patch '/memos/:id' do
-  generate_memos
+  generate_memos(params[:id], params[:title], params[:content])
   update_memo
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  delete_memo
+  delete_memo([params[:id]])
   redirect '/memos'
 end
