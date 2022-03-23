@@ -1,7 +1,7 @@
 <p class='title'><%= CGI.escapeHTML(@memos[0]['title']) %></p>
 <p class='content'><%= CGI.escapeHTML(@memos[0]['content']) %></p>
-<a href="/memos/<%= @memos[0]['id'].to_i %>/edit">変更</a>
-<form method='post' action="/memos/<%= @memos[0]['id'].to_i %>">
+<a href="/memos/<%= @memos[0]['id'] %>/edit">変更</a>
+<form method='post' action="/memos/<%= @memos[0]['id'] %>">
   <input type='hidden' name='_method' value='delete'>
   <input type='submit' value='削除'>
 </form>

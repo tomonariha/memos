@@ -7,7 +7,7 @@
 1. PostgreSQLに接続し、`CREATE DATABASE memo;`でデータ保存用のDBを作ります。
 1. 作ったデータベース(MEMO)に移動し、以下のDDL文を実行しデータ保存用のテーブルを作ります。
 `CREATE TABLE memos (id SERIAL NOT NULL, title VARCHAR NOT NULL, content VARCHAR, PRIMARY KEY (id));`
-1. `bundle install`を実行し、sinatra、sinatra-contrib,pgのgemをインストールします。
+1. `bundle install`を実行し、sinatra、sinatra-contrib,pg,webrickのgemをインストールします。
 1. ruby memos.rbを実行し、Sinatraを起動します。
 1. ブラウザで<http://localhost:4567/memos>にアクセスします。
 1. `追加`でメモを新しく作り投稿します。
