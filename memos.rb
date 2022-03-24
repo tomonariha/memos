@@ -5,6 +5,7 @@ require 'sinatra/reloader'
 require 'pg'
 require 'cgi'
 
+# データベースとやり取りをするクラス
 class Memo
   def initialize
     @connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
@@ -12,19 +13,19 @@ class Memo
 
   def all
     @connect.exec('SELECT * FROM memos ORDER BY id ASC')
-  end  
+  end
 
   def detail(id)
-    @connect.exec('SELECT * FROM memos WHERE id = $1', id)
-  end  
+    @connect.exec('SELECT * FROM memos WHERE id = $1 LIMIT 1', id)
+  end
 
   def save(title, content)
     @connect.exec('INSERT INTO memos(title, content) VALUES ($1, $2)', [title, content])
-  end  
+  end
 
   def update(title, content, id)
     @connect.exec('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [title, content, id])
-  end  
+  end
 
   def destroy(id)
     @connect.exec('DELETE FROM memos WHERE id = $1', id)
