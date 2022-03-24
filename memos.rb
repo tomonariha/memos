@@ -6,8 +6,10 @@ require 'pg'
 require 'cgi'
 
 class Memo 
-  @connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
-
+  def initialize
+    @connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  end
+  
   def create(id, title, content)
     { id: id, title: title, content: content }
   end  
