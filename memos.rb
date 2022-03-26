@@ -23,7 +23,7 @@ class Memo
     @connect.exec('INSERT INTO memos(title, content) VALUES ($1, $2)', [title, content])
   end
 
-  def update(title, content, id)
+  def update(id, title, content)
     @connect.exec('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [title, content, id])
   end
 
@@ -32,10 +32,10 @@ class Memo
   end
 end
 
-memos = Memo.new
+memo = Memo.new
 
 get '/memos' do
-  @memos = memos.all
+  @memos = memo.all
   @title = 'index'
   erb :index
 end
@@ -46,28 +46,28 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  @memo = memos.detail([params[:id]])
+  @memo = memo.detail([params[:id]]).first
   @title = 'detail'
   erb :detail
 end
 
 post '/memos' do
-  memos.save(params[:title], params[:content])
+  memo.save(params[:title], params[:content])
   redirect '/memos'
 end
 
 get '/memos/:id/edit' do
-  @memo = memos.detail([params[:id]])
+  @memo = memo.detail([params[:id]]).first
   @title = 'edit'
   erb :edit
 end
 
 patch '/memos/:id' do
-  memos.update(params[:title], params[:content], params[:id])
+  memo.update(params[:id], params[:title], params[:content])
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  memos.destroy([params[:id]])
+  memo.destroy([params[:id]])
   redirect '/memos'
 end
