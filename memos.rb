@@ -16,7 +16,7 @@ class Memo
   end
 
   def detail(id)
-    @connect.exec('SELECT * FROM memos WHERE id = $1 LIMIT 1', id)
+    @connect.exec('SELECT * FROM memos WHERE id = $1 LIMIT 1', id).first
   end
 
   def save(title, content)
@@ -46,7 +46,7 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  @memo = memo.detail([params[:id]]).first
+  @memo = memo.detail([params[:id]])
   @title = 'detail'
   erb :detail
 end
@@ -57,7 +57,7 @@ post '/memos' do
 end
 
 get '/memos/:id/edit' do
-  @memo = memo.detail([params[:id]]).first
+  @memo = memo.detail([params[:id]])
   @title = 'edit'
   erb :edit
 end
