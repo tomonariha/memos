@@ -1,8 +1,6 @@
-<form method='get' action='memos/new'>
-  <input type='submit' value='追加'>
-</form>
+<a href='/memos/new'>追加</a>
 <ul>
-  <% @memos.each do |id, content| %>
-  <li> <a href='/memos/<%= id.to_i %>'><%= CGI.escapeHTML(content['title']) %></a></li>
+  <% @memos.each do |memo| %>
+  <li> <a href="/memos/<%= memo['id'] %>"><%= CGI.escapeHTML(memo['title']) %></a></li>
   <% end %>
 </ul>

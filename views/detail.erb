@@ -1,10 +1,7 @@
-<% id = params[:id] %>
-<p class='title'><%= CGI.escapeHTML(@memos[id]['title']) %></p>
-<p class='body'><%= CGI.escapeHTML(@memos[id]['body']) %></p>
-<form method='get' action="<%= id.to_i %>/edit">
-  <input type='submit' value='変更'>
-</form>
-<form method='post' action="/memos/<%= id.to_i %>">
+<p class='title'><%= CGI.escapeHTML(@memo['title']) %></p>
+<p class='content'><%= CGI.escapeHTML(@memo['content']) %></p>
+<a href="/memos/<%= @memo['id'] %>/edit">変更</a>
+<form method='post' action="/memos/<%= @memo['id'] %>">
   <input type='hidden' name='_method' value='delete'>
   <input type='submit' value='削除'>
 </form>

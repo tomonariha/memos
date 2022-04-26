@@ -2,23 +2,40 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
+require 'pg'
 require 'cgi'
 
-def save_file
-  File.open('public/json/data.json', 'w') { |file| JSON.dump(@memos, file) }
+# データベースとやり取りをするクラス
+class Memo
+  def initialize
+    @connect = PG::Connection.new(host: 'localhost', user: 'postgres', dbname: 'memo')
+  end
+
+  def all
+    @connect.exec('SELECT * FROM memos ORDER BY id ASC')
+  end
+
+  def detail(id)
+    @connect.exec('SELECT * FROM memos WHERE id = $1 LIMIT 1', id).first
+  end
+
+  def save(title, content)
+    @connect.exec('INSERT INTO memos(title, content) VALUES ($1, $2)', [title, content])
+  end
+
+  def update(id, title, content)
+    @connect.exec('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [title, content, id])
+  end
+
+  def destroy(id)
+    @connect.exec('DELETE FROM memos WHERE id = $1', id)
+  end
 end
 
-def load_file
-  File.open('public/json/data.json') { |file| @memos = JSON.parse(file.read) }
-end
-
-def generate_memos(id)
-  @memos[id] = { 'title': params['title'], 'body': params['body'] }
-end
+memo = Memo.new
 
 get '/memos' do
-  load_file
+  @memos = memo.all
   @title = 'index'
   erb :index
 end
@@ -29,34 +46,28 @@ get '/memos/new' do
 end
 
 get '/memos/:id' do
-  load_file
+  @memo = memo.detail([params[:id]])
   @title = 'detail'
   erb :detail
 end
 
 post '/memos' do
-  load_file
-  generate_memos(object_id.to_s)
-  save_file
+  memo.save(params[:title], params[:content])
   redirect '/memos'
 end
 
 get '/memos/:id/edit' do
-  load_file
+  @memo = memo.detail([params[:id]])
   @title = 'edit'
   erb :edit
 end
 
 patch '/memos/:id' do
-  load_file
-  generate_memos(params[:id].to_s)
-  save_file
+  memo.update(params[:id], params[:title], params[:content])
   redirect '/memos'
 end
 
 delete '/memos/:id' do
-  load_file
-  @memos.delete(params[:id].to_s)
-  save_file
+  memo.destroy([params[:id]])
   redirect '/memos'
 end
